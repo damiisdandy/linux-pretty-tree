@@ -1,6 +1,6 @@
 import os
 from typing import Any
-from settings import INDENT_SIZE, INDENT_HORIZONAL_LENGTH, CHARACTERS
+from settings import INDENT_SIZE, INDENT_HORIZONAL_LENGTH
 
 
 class CHARACTERS:
@@ -38,3 +38,7 @@ def get_dirs_in_folder(folder_path: str):
 
 def get_parent_dir(folder_path: str):
     return os.path.normpath(folder_path + os.sep + os.pardir)
+  
+
+def join_parent_opposing_dir_ui(root_path: str, folder_path: str):
+    
