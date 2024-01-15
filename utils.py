@@ -4,6 +4,8 @@ from settings import INDENT_SIZE, INDENT_HORIZONAL_LENGTH
 
 
 class CHARACTERS:
+    """Helper class to store unicode characters and help with text rendering"""
+
     BAD: str = "❌"
     GOOD: str = "✅"
     FOLDER: str = "📁"
@@ -27,17 +29,21 @@ class CHARACTERS:
         pass
 
     def boldify(string: str):
+        """Render string in bold"""
         return CHARACTERS.BOLD + string + CHARACTERS.CLEAR
 
     def orangeify(string: str):
+        """Render string in orange"""
         return CHARACTERS.ORANGE + string + CHARACTERS.CLEAR
 
 
 def get_last_index(iterable: list[Any]):
+    """A helper function to get the last index of a list"""
     return iterable.index(iterable[-1])
 
 
 def get_dirs_in_folder(folder_path: str):
+    """A helper function to get all directories in a folder"""
     dirs_output = []
     for dir in os.listdir(folder_path):
         if os.path.isdir(os.path.join(folder_path, dir)):
@@ -47,10 +53,12 @@ def get_dirs_in_folder(folder_path: str):
 
 
 def get_parent_dir(folder_path: str):
+    """A helper function to get the parent directory of a folder"""
     return os.path.normpath(folder_path + os.sep + os.pardir)
 
 
 def get_adjacent_dirs(folder_path: str):
+    """A helper function to get the directories at the top and bottom of a folder"""
     folder_path = os.path.abspath(folder_path)
     parent_dir = get_parent_dir(folder_path)
     dirs_in_parent = get_dirs_in_folder(parent_dir)
@@ -69,6 +77,7 @@ def get_adjacent_dirs(folder_path: str):
 
 
 def join_parent_opposing_dir_ui(root_path: str, path: str):
+    """A helper function to render the UI that connects the line of parent directories"""
     path_nesting = path.replace(root_path, "").split(os.sep)
 
     output = ""
@@ -87,11 +96,13 @@ def join_parent_opposing_dir_ui(root_path: str, path: str):
 
 
 def display_indent_ui(root_path: str, path: str, is_last_item: bool = False):
+    """A helper function to render the UI for indentation for each file/directory"""
     indent_ui = CHARACTERS.L_INDENT_UI if is_last_item else CHARACTERS.T_INDENT_UI
     return join_parent_opposing_dir_ui(root_path, path) + indent_ui
 
 
 def get_icon(path: str):
+    """A helper function to get the icon for a file/directory"""
     image_extentions = ["jpg", "jpeg", "png", "gif", "svg", "webp", "bmp", "ico"]
     video_extentions = ["mp4", "webm", "ogg", "mov", "flv", "avi", "mkv"]
     audio_extentions = ["mp3", "wav", "ogg", "m4a", "flac", "aac"]

@@ -5,7 +5,6 @@ from utils import (
     get_parent_dir,
     get_adjacent_dirs,
     join_parent_opposing_dir_ui,
-    display_indent_ui,
     CHARACTERS,
 )
 import os

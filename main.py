@@ -20,31 +20,31 @@ def main(
 ):
     """List nested file tree in a pretty way :)"""
     folder_path = folder_path or os.getcwd()
-    absolute_path = os.path.abspath(folder_path)
-    if not os.path.exists(absolute_path):
+    root_absolute_path = os.path.abspath(folder_path)
+    if not os.path.exists(root_absolute_path):
         print(f"Path does not exist {CHARACTERS.BAD}")
         return
     # sort by directory first
     walked_dirs_files = []
-    for root, dirs, files in os.walk(absolute_path):
+    for root, dirs, files in os.walk(root_absolute_path):
         if f"{os.sep}." in root and not show_hidden_files:
             continue
         dirs.sort()
         files.sort()
         walked_dirs_files.append((root, dirs, files))
 
+    # sort by root directory
     walked_dirs_files.sort(key=lambda x: x[0])
 
     for root, dirs, files in walked_dirs_files:
         dir_name = os.path.basename(root)
         # sort files
         files.sort()
-        level = root.replace(absolute_path, "").count(os.sep)
         # skip root directory
-        if root != absolute_path:
+        if root != root_absolute_path:
             is_last_dir = get_adjacent_dirs(root)["next"] is None
             print(
-                f"{display_indent_ui(root_path=absolute_path, path=root, is_last_item=is_last_dir)}{get_icon(root)} {CHARACTERS.boldify(CHARACTERS.orangeify(dir_name))}"
+                f"{display_indent_ui(root_path=root_absolute_path, path=root, is_last_item=is_last_dir)}{get_icon(root)} {CHARACTERS.boldify(CHARACTERS.orangeify(dir_name))}"
             )
         for index, file in enumerate(files):
             full_file_path = os.path.join(root, file)
@@ -52,7 +52,7 @@ def main(
             # no more directories come after files
             is_last_file = is_last_file_index and not dirs
             print(
-                f"{display_indent_ui(root_path=absolute_path, path=full_file_path, is_last_item=is_last_file)}{get_icon(file)} {file}"
+                f"{display_indent_ui(root_path=root_absolute_path, path=full_file_path, is_last_item=is_last_file)}{get_icon(file)} {file}"
             )
 
 
