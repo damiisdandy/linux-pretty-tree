@@ -5,8 +5,8 @@ from utils import (
     CHARACTERS,
     display_indent_ui,
     get_last_index,
-    get_dirs_in_folder,
-    get_parent_dir,
+    get_adjacent_dirs,
+    get_icon,
 )
 
 
@@ -14,7 +14,10 @@ app = typer.Typer()
 
 
 @app.callback(invoke_without_command=True)
-def main(folder_path: Annotated[Optional[str], typer.Argument()] = None):
+def main(
+    folder_path: Annotated[Optional[str], typer.Argument()] = None,
+    show_hidden_files: bool = False,
+):
     """List nested file tree in a pretty way :)"""
     folder_path = folder_path or os.getcwd()
     absolute_path = os.path.abspath(folder_path)
@@ -24,7 +27,7 @@ def main(folder_path: Annotated[Optional[str], typer.Argument()] = None):
     # sort by directory first
     walked_dirs_files = []
     for root, dirs, files in os.walk(absolute_path):
-        if f"{os.sep}." in root:
+        if f"{os.sep}." in root and not show_hidden_files:
             continue
         dirs.sort()
         files.sort()
@@ -39,20 +42,17 @@ def main(folder_path: Annotated[Optional[str], typer.Argument()] = None):
         level = root.replace(absolute_path, "").count(os.sep)
         # skip root directory
         if root != absolute_path:
-            parent_dir = get_parent_dir(root)
-            dirs_in_parent = get_dirs_in_folder(parent_dir)
-            dirs_in_parent.sort()
-
-            is_last_dir = dir_name == dirs_in_parent[-1]
+            is_last_dir = get_adjacent_dirs(root)["next"] is None
             print(
-                f"{display_indent_ui(level=level - 1, is_last_item=is_last_dir)}{CHARACTERS.FOLDER}{dir_name}/"
+                f"{display_indent_ui(root_path=absolute_path, path=root, is_last_item=is_last_dir)}{get_icon(root)} {CHARACTERS.boldify(CHARACTERS.orangeify(dir_name))}"
             )
         for index, file in enumerate(files):
+            full_file_path = os.path.join(root, file)
             is_last_file_index = index == get_last_index(files)
             # no more directories come after files
             is_last_file = is_last_file_index and not dirs
             print(
-                f"{display_indent_ui(level=level, is_last_item=is_last_file)}{CHARACTERS.FILE}{file}"
+                f"{display_indent_ui(root_path=absolute_path, path=full_file_path, is_last_item=is_last_file)}{get_icon(file)} {file}"
             )
 
 
