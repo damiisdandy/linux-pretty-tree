@@ -1,11 +1,11 @@
 # Unix Tree 🌳
 
-A simply package inspired by the unix [tree](https://www.geeksforgeeks.org/tree-command-unixlinux/) package, my package doesn't have all the features and all, but I built it out of curiosity.
+A simple package inspired by the Unix [tree](https://www.geeksforgeeks.org/tree-command-unixlinux/) package, my package doesn't have all the features and all, but I built it out of curiosity.
 
-I simply walks through files and folders within a directory and render then in a nice way :)
+I simply walk through files and folders within a directory and render them in a nice way :)
 
 ## How to use
-It takes the folder path as the arguement, if left blank it looks at the current directory
+It takes the folder path as the argument, if left blank it looks at the current directory
 
 ### Options
 ```bash
